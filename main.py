@@ -8,7 +8,7 @@ def similar(a, b):
 
 
 # Load in meeting attendance workbook (Will change)
-hoursForm = load_workbook('Nov Monthly Meeting Attendance (Responses).xlsx')
+hoursForm = load_workbook('Interest Meeting 10_26 Attendance (Responses).xlsx')
 
 # Load in hours workbook (Stays the same)
 viewHours = load_workbook('Red Cross Club 2021-22 Hours.xlsx')
@@ -17,19 +17,26 @@ viewHours = load_workbook('Red Cross Club 2021-22 Hours.xlsx')
 vHoursSheet = viewHours['Sheet1']
 responseSheet = hoursForm['Form Responses 1']
 
+# find total number of attendees (+1)
+totalMembers = max((a.row
+   for a in vHoursSheet['A']
+   if a.value is not None))
 
 memberList = []
 # fill memberList array with all names (FirstNameLastName) on hours excel sheet
-for i in range(2,124):
+for i in range(2,totalMembers+1):
     name = vHoursSheet.cell(row=i, column=1).value + vHoursSheet.cell(row=i, column=2).value
     # remove extra spaces & adjust for capitalization variances
     name = name.replace(" ", "")
     memberList.append(name.lower())
 
-
+# find total number of attendees (+1)
+totalAttendees = max((c.row
+   for c in responseSheet['C']
+   if c.value is not None))
 # fill whoAttended array with all names (FirstNameLastName) on meeting attendance excel sheet
 whoAttended = []
-for i in range(2,82):
+for i in range(2,totalAttendees+1):
     name = responseSheet.cell(row=i, column=3).value + responseSheet.cell(row=i, column=4).value
     # remove extra spaces & adjust for capitalization variances
     name = name.replace(" ", "")
@@ -54,9 +61,11 @@ for i in range(len(memberList)):
     for attendee in whoAttended:
         # determine similarity between each member and each attendee
         score = similar(member, attendee)
+        score = round(score,4)
+        score = score *100
         # print member & corresponding attendee & similarity score if 0.8<=score<1
-        if score >= 0.70 and score < 1:
-            print(member + " " + attendee + " " + str(score))
-
+        if score >= 70 and score < 100:
+            print(member + " " + attendee + " " + str(score) + "% similarity" )
+print("\n")
 # Save hours excel sheet with updated hours
 viewHours.save(filename = 'Red Cross Club 2021-22 Hours.xlsx')
