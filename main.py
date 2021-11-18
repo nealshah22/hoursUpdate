@@ -8,7 +8,7 @@ def similar(a, b):
 
 
 # Load in meeting attendance workbook (Will change)
-hoursForm = load_workbook('Interest Meeting 10_26 Attendance (Responses).xlsx')
+hoursForm = load_workbook('Nov Monthly Meeting Attendance (Responses).xlsx')
 
 # Load in hours workbook (Stays the same)
 viewHours = load_workbook('Red Cross Club 2021-22 Hours.xlsx')
